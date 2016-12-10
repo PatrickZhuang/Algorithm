@@ -16,16 +16,18 @@ public class Main {
         // 比较系统自带排序和冒泡排序的速度
         Random random = new Random();
         for (int i = 0; i < 5; i++) {
-            int capacity = 30000;
+            int capacity = 5000;
             List<Integer> list = new ArrayList<>(capacity);
             List<Integer> bubbleSortList = new ArrayList<>(capacity);
             List<Integer> quickSortList = new ArrayList<>(capacity);
+            List<Integer> selectionSortList = new ArrayList<>(capacity);
             for (int j = 0; j < capacity; j++) {
                 list.add(random.nextInt(5000));
             }
 
             bubbleSortList.addAll(list);
             quickSortList.addAll(list);
+            selectionSortList.addAll(list);
 
             System.out.println("\n第" + (i + 1) + "次比较");
             long start = System.currentTimeMillis();
@@ -42,6 +44,11 @@ public class Main {
             Sorter.quickSort(quickSortList);
             System.out.println("quick sort用时 " + (System.currentTimeMillis() - start) + " ms");
             System.out.println("排序后前10个数字分别是: " + quickSortList.subList(0, 10).stream().map(String::valueOf).collect(Collectors.joining(", ")));
+
+            start = System.currentTimeMillis();
+            Sorter.selectionSort(selectionSortList);
+            System.out.println("selection sort用时 " + (System.currentTimeMillis() - start) + " ms");
+            System.out.println("排序后前10个数字分别是: " + selectionSortList.subList(0, 10).stream().map(String::valueOf).collect(Collectors.joining(", ")));
         }
     }
 

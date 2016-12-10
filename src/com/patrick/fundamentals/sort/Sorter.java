@@ -32,7 +32,11 @@ public class Sorter {
         return list;
     }
 
-
+    /**
+     * 快速排序
+     *
+     * @param list
+     */
     public static void quickSort(List<Integer> list) {
         partition(list, 0, list.size() - 1);
     }
@@ -69,4 +73,26 @@ public class Sorter {
         }
     }
 
+    /**
+     * 选择排序
+     * 选一个基准,基准后面的数依次和基准数比较,记录下最小的数的index,最后交换基准index和最小数index;和冒泡排序循环一样的次数,比冒泡效率稍高,也是O(n2),只是选择排序只记录最小数index,最后交换1次,冒泡排序一直交换位置到最后
+     *
+     * @param list
+     */
+    public static void selectionSort(List<Integer> list) {
+        if (list == null || list.size() <= 1) {
+            return;
+        }
+        for (int i = 0; i < list.size() - 1; i++) {
+            int minIndex = i; // temp index保存最小的index
+            for (int j = i + 1; j < list.size(); j++) {
+                if (list.get(j) < list.get(minIndex)) {
+                    minIndex = j;
+                }
+            }
+            int temp = list.get(i);
+            list.set(i, list.get(minIndex));
+            list.set(minIndex, temp);
+        }
+    }
 }
