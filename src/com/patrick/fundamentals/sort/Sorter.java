@@ -1,5 +1,7 @@
 package com.patrick.fundamentals.sort;
 
+import com.sun.istack.internal.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -93,6 +95,103 @@ public class Sorter {
             int temp = list.get(i);
             list.set(i, list.get(minIndex));
             list.set(minIndex, temp);
+        }
+    }
+
+    /**
+     * 直接插入排序,序列分两组,一个是排序好的,一个是待排序的,每次再待排序序列中取第一个数去和排序好的依次比较,找到位置插入
+     *
+     * @param list
+     */
+    public static void insertSort(List<Integer> list) {
+        if (list == null || list.size() <= 1) {
+            return;
+        }
+
+        // 遍历无序数组,取第一个数字
+        for (int i = 1; i < list.size(); i++) {
+            // 遍历有序数组
+            int temp = list.get(i);
+            int j = i - 1;
+            for (; j >= 0 && temp < list.get(j); j--) {
+                list.set(j + 1, list.get(j));
+            }
+            list.set(j + 1, temp);
+        }
+    }
+
+    /**
+     * 希尔排序,插入排序增强版,递减步长
+     *
+     * @param list
+     */
+    public static void shellSort(List<Integer> list) {
+        if (list == null || list.size() <= 1) {
+            return;
+        }
+
+        int step = list.size() / 2;
+        while (step >= 1) {
+            for (int i = step; i < list.size(); i++) {
+                int temp = list.get(i);
+                int j = i - step;
+                for (; j >= 0 && temp < list.get(j); j -= step) {
+                    list.set(j + step, list.get(j));
+                }
+                list.set(j + step, temp);
+            }
+            step /= 2;
+        }
+    }
+
+    public static void mergeSort(List<Integer> unsortedList) {
+        Integer[] temp = new Integer[unsortedList.size()];
+        mergeSort(unsortedList, temp, 0, unsortedList.size() - 1);
+    }
+
+    private static void mergeSort(List<Integer> unsortedList, Integer[] tempList, int left, int right) {
+        if (left < right) {
+            int mid = (left + right) / 2;
+            mergeSort(unsortedList, tempList, left, mid);
+            mergeSort(unsortedList, tempList, mid + 1, right);
+            merge(unsortedList, left, mid, right, tempList);
+        }
+    }
+
+    /**
+     * 连接两个有序数组生成有序数组
+     *
+     * @param list
+     */
+    private static void merge(@NotNull List<Integer> list, int left, int mid, int right, @NotNull Integer[] temp) {
+        int leftStart = left;
+        int rightStart = mid + 1;
+        int tempIndex = left;
+        while (leftStart <= mid && rightStart <= right) {
+            try {
+                if (list.get(leftStart) < list.get(rightStart)) {
+                    temp[tempIndex++] = list.get(leftStart++);
+                } else {
+                    temp[tempIndex++] = list.get(rightStart++);
+                }
+            } catch (Exception e) {
+                System.out.println("left start : " + leftStart);
+                System.out.println("right start : " + rightStart);
+                System.out.println("temp index : " + tempIndex);
+            }
+
+        }
+
+        while (leftStart <= mid) {
+            temp[tempIndex++] = list.get(leftStart++);
+        }
+
+        while (rightStart <= right) {
+            temp[tempIndex++] = list.get(rightStart++);
+        }
+
+        for (int index = left; index <= right; index++) {
+            list.set(index, temp[index]);
         }
     }
 }
